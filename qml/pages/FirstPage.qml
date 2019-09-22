@@ -41,7 +41,7 @@ Page {
     property int player: GameEngine.getActivePlayer();
     property int weapon: GameEngine.getActiveWeapon();
     property int textsize: 25
-    property int boxsize: 60
+    property int boxsize: GameEngine.tileWidth
     property var shiplist: ["sub","ship","cruiser","carrier"]
     property bool shipinforetract: false
 
@@ -128,8 +128,8 @@ Page {
 //        }
 
         // Tell SilicaFlickable the height of its content.
-        contentHeight: GameEngine.gameAreaY()*boxsize+2*boxsize
-        contentWidth: GameEngine.gameAreaX()*boxsize
+        contentHeight: GameEngine.boardHeight + 2 * GameEngine.tileHeight
+        contentWidth: GameEngine.boardWidth
         //VerticalScrollDecorator{}
         //HorizontalScrollDecorator{}
 
@@ -138,15 +138,15 @@ Page {
         Column {
             id: gridcolumn
             x: 0
-            y: boxsize*2
+            y: 2 * GameEngine.tileHeight
             Grid {
                 id: maingrid
-                columns: GameEngine.gameAreaX()
-                rows: GameEngine.gameAreaY()
+                columns: GameEngine.gameAreaX
+                rows: GameEngine.gameAreaY
                 spacing: 0
                 Repeater {
                     id: elements
-                    model: GameEngine.gameAreaX()*GameEngine.gameAreaY()
+                    model: GameEngine.gameAreaX * GameEngine.gameAreaY
                     delegate: PlacingBlock {
                     }
                 }

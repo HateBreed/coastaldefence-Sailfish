@@ -37,6 +37,26 @@ ApplicationWindow
     id: mainwin
     initialPage: Component { StartPage { } }
     cover: Qt.resolvedUrl("cover/CoverPage.qml")
+
+    function updateBoardSize() {
+        GameEngine.boardWidth = mainwin.width
+        // Ensure the tiles are square
+        GameEngine.boardHeight = GameEngine.gameAreaY * GameEngine.tileWidth
+
+        if ((GameEngine.boardHeight + 2 * GameEngine.tileHeight) > mainwin.height) {
+            // The board is too high to fit on the page
+            var avilableHeight = (mainwin.height / (GameEngine.gameAreaY + 2)) * GameEngine.gameAreaY
+            GameEngine.boardHeight = avilableHeight
+            // Ensure the tiles are square
+            GameEngine.boardWidth = GameEngine.gameAreaX * GameEngine.tileHeight
+        }
+    }
+
+    Component.onCompleted: updateBoardSize()
+
+    Connections {
+        target: mainwin
+        onWidthChanged: updateBoardSize()
+        onHeightChanged: updateBoardSize()
+    }
 }
-
-
