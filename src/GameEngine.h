@@ -15,6 +15,14 @@
 class GameEngine : public QObject
 {
     Q_OBJECT
+
+    Q_PROPERTY(quint32 boardWidth READ boardWidth WRITE setBoardWidth NOTIFY boardWidthChanged)
+    Q_PROPERTY(quint32 boardHeight READ boardHeight WRITE setBoardHeight NOTIFY boardHeightChanged)
+    Q_PROPERTY(quint32 tileWidth READ tileWidth NOTIFY tileWidthChanged)
+    Q_PROPERTY(quint32 tileHeight READ tileHeight NOTIFY tileHeightChanged)
+    Q_PROPERTY(quint16 gameAreaX READ gameAreaX NOTIFY gameAreaXChanged)
+    Q_PROPERTY(quint16 gameAreaY READ gameAreaY NOTIFY gameAreaYChanged)
+
 public:
     //explicit GameEngine(QObject *parent = 0);
     Q_INVOKABLE static GameEngine* initEngine();
@@ -25,8 +33,8 @@ public:
     Q_INVOKABLE QString getDestroyedShipImage(qint16 _x, qint16 _y);
 
     Q_INVOKABLE bool checkPosition(Ship* _ship, qint16 _x, qint16 _y);
-    Q_INVOKABLE qint16 gameAreaX();
-    Q_INVOKABLE qint16 gameAreaY();
+    qint16 gameAreaX() const;
+    qint16 gameAreaY() const;
 
     Q_INVOKABLE qint16 getActivePlayer() const;
     Q_INVOKABLE qint16 getGameState();
@@ -78,7 +86,21 @@ public:
     Q_INVOKABLE bool getDebug();
     Q_INVOKABLE void toggleDebug();
 
+    quint32 boardWidth() const;
+    quint32 boardHeight() const;
+    quint32 tileWidth() const;
+    quint32 tileHeight() const;
+
+    void setBoardWidth(quint32 width);
+    void setBoardHeight(quint32 height);
+
 signals:
+    void boardWidthChanged();
+    void boardHeightChanged();
+    void tileWidthChanged();
+    void tileHeightChanged();
+    void gameAreaXChanged();
+    void gameAreaYChanged();
 
 public slots:
 
@@ -87,6 +109,9 @@ private:
     void initGameArea();
 
     static GameEngine* iEngine;
+
+    quint32 iBoardWidth;
+    quint32 iBoardHeight;
 
     qint16 iGameareaX;
     qint16 iGameareaY;

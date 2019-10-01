@@ -2,10 +2,10 @@ import QtQuick 2.0
 import Sailfish.Silica 1.0
 
 Rectangle {
-    width: 60
-    height: 60
-    property int xcoordinate: index % GameEngine.gameAreaX()
-    property int ycoordinate: Math.floor(index / GameEngine.gameAreaX())
+    width: GameEngine.tileWidth
+    height: GameEngine.tileHeight
+    property int xcoordinate: index % GameEngine.gameAreaX
+    property int ycoordinate: Math.floor(index / GameEngine.gameAreaX)
     color: (GameEngine.getAreaAt(xcoordinate,ycoordinate) === 1 ? "red" : GameEngine.getAreaAt(xcoordinate,ycoordinate) === 2 ? "black" : GameEngine.getAreaAt(xcoordinate,ycoordinate) === 3 ? Theme.highlightColor : "transparent")
     border.color: "white"
     border.width: 1

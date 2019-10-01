@@ -39,7 +39,7 @@ Page {
     property bool destroyed: false
     property int hitx: 0
     property int hity: 0
-    property int boxsize: 60
+    property int boxsize: GameEngine.tileWidth
 
     // To enable PullDownMenu, place our content in a SilicaFlickable
     SilicaFlickable {
@@ -80,8 +80,8 @@ Page {
         }
 
         // Tell SilicaFlickable the height of its content.
-        contentHeight: GameEngine.gameAreaY()*boxsize+2*boxsize
-        contentWidth: GameEngine.gameAreaX()*boxsize
+        contentHeight: GameEngine.gameAreaY + (2 * GameEngine.tileHeight)
+        contentWidth: GameEngine.gameAreaX
         //VerticalScrollDecorator{}
 
         // Place our content in a Column.  The PageHeader is always placed at the top
@@ -89,15 +89,15 @@ Page {
         Column {
             id: gridcolumn2
             x: 0
-            y: boxsize*2
+            y: 2 * GameEngine.tileHeight
             Grid {
                 id: maingrid2
-                columns: GameEngine.gameAreaX()
-                rows: GameEngine.gameAreaY()
+                columns: GameEngine.gameAreaX
+                rows: GameEngine.gameAreaY
                 spacing: 0
                 Repeater {
                     id: elements2
-                    model: GameEngine.gameAreaX()*GameEngine.gameAreaY()
+                    model: GameEngine.gameAreaX * GameEngine.gameAreaY
                     delegate: ShootingBlock {
                     }
                 }
@@ -107,16 +107,16 @@ Page {
             id: shotinfo
             visible: false
             width: parent.width
-            height: boxsize*3
+            height: 3 * GameEngine.tileHeight
             border.width: 0
             radius: 0
             border.color: Theme.secondaryColor
             color: Theme.secondaryHighlightColor
             x: 0
-            y: boxsize*(-2)
+            y: (-2) * GameEngine.tileHeight
 
             Behavior on visible {
-                NumberAnimation { target: shotinfo; property: "y"; from: boxsize*(-2); to: 0; duration: 500; easing.type: Easing.InOutQuad }
+                NumberAnimation { target: shotinfo; property: "y"; from: (-2) * GameEngine.tileHeight; to: 0; duration: 500; easing.type: Easing.InOutQuad }
             }
 
             Label {
@@ -190,13 +190,13 @@ Page {
         onRunningChanged: {
             var realx = 0
             var realy = 0
-            for (var i = 0; i < GameEngine.gameAreaX()*GameEngine.gameAreaY() ; i++) {
+            for (var i = 0; i < GameEngine.gameAreaX * GameEngine.gameAreaY ; i++) {
 
-                realx = i % GameEngine.gameAreaX()
-                realy = Math.floor( i / GameEngine.gameAreaX())
+                realx = i % GameEngine.gameAreaX
+                realy = Math.floor( i / GameEngine.gameAreaX)
                 if(GameEngine.getAreaAt(realx,realy) === 2) {
-                    maingrid2.childAt(realx*60,realy*60).color = "black"
-                    console.log(realx + "," + realy + " is destroyed (" + realx*60 + "," + realy*60 + ") " + maingrid2.childAt(realx*60,realy*60).color  )
+                    maingrid2.childAt(realx * GameEngine.tileWidth, realy * GameEngine.tileHeight).color = "black"
+                    console.log(realx + "," + realy + " is destroyed (" + realx * GameEngine.tileWidth + "," + realy * GameEngine.tileHeight + ") " + maingrid2.childAt(realx * GameEngine.tileWidth, realy * GameEngine.tileHeight).color)
                 }
             }
             console.log("destroyrunning")

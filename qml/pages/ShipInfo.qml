@@ -83,8 +83,8 @@ Rectangle {
         opacity: 1.0
         x: 10
         y: boxsize
-        width: GameEngine.gameAreaX()*boxsize
-        height: boxsize*5+20
+        width: GameEngine.gameAreaX * boxsize
+        height: boxsize * 5 + 20
         Label {
             text: "WEAPONS"
         }

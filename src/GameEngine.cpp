@@ -20,11 +20,12 @@
 GameEngine* GameEngine::iEngine = NULL;
 
 GameEngine::GameEngine(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    iBoardWidth(9 * 60),
+    iBoardHeight(14 * 60),
+    iGameareaX(GAMEX),
+    iGameareaY(GAMEY)
 {
-        iGameareaX = GAMEX;
-        iGameareaY = GAMEY;
-
         for(int i = 0; i < GAMEX; i++) {
             for(int j = 0; j < GAMEY; j++)
                 iPlayer1Area[i][j] = iPlayer2Area[i][j] = 0;
@@ -433,12 +434,60 @@ void GameEngine::setIActivePlayer(const qint16 &value)
 }
 
 
-qint16 GameEngine::gameAreaX() {
+qint16 GameEngine::gameAreaX() const
+{
     return iGameareaX;
 }
 
-qint16 GameEngine::gameAreaY() {
+qint16 GameEngine::gameAreaY() const
+{
     return iGameareaY;
+}
+
+quint32 GameEngine::boardWidth() const
+{
+    return iBoardWidth;
+}
+
+quint32 GameEngine::boardHeight() const
+{
+    return iBoardHeight;
+}
+
+quint32 GameEngine::tileWidth() const
+{
+    // Round down
+    return (iBoardWidth / iGameareaX);
+}
+
+quint32 GameEngine::tileHeight() const
+{
+    // Round down
+    return (iBoardHeight / iGameareaY);
+}
+
+void GameEngine::setBoardWidth(quint32 width)
+{
+    if (iBoardWidth != width) {
+        quint32 previousTileWidth = tileWidth();
+        iBoardWidth = width;
+        emit boardWidthChanged();
+        if (previousTileWidth != tileWidth()) {
+            emit tileWidthChanged();
+        }
+    }
+}
+
+void GameEngine::setBoardHeight(quint32 height)
+{
+    if (iBoardHeight != height) {
+        quint32 previousTileHeight = tileHeight();
+        iBoardHeight = height;
+        emit boardHeightChanged();
+        if (previousTileHeight != tileHeight()) {
+            emit tileHeightChanged();
+        }
+    }
 }
 
 Ship* GameEngine::getShipAt(qint16 _x, qint16 _y) {
